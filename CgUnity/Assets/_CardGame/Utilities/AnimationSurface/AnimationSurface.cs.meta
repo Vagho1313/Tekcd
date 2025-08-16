@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 3561ccb0d97f24d159707229e7bfb0b3
+timeCreated: 1505282797
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 186336
+  packageName: Poker 3D and 2D , Texas hold 'em, Photon PUN, Multiplayer Template
+  packageVersion: 1.7
+  assetPath: Assets/Poker/AnimationSurface/Scripts/AnimationSurface.cs
+  uploadId: 713549
