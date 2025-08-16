@@ -24,13 +24,13 @@ namespace CardGame
         private AnimationCurve rotateCurve;
         private AnimationCurve deformCurve;
 
-        public override void Setup(Material cardMaterial, Material cardBackMaterial, Rect rect, Rect backRect,
+        public override void Setup(Rect rect, Rect backRect,
             AnimationCurve moveCurve, AnimationCurve rotateCurve, AnimationCurve deformCurve)
         {
             cardSurface2.transform.rotation = Quaternion.Euler(carPivot.eulerAngles.x, carPivot.eulerAngles.y, carPivot.eulerAngles.z + 180f);
 
-            cardSurface1.Init(subdivisions, cardMaterial);
-            cardSurface2.Init(subdivisions, cardBackMaterial);
+            cardSurface1.Init(subdivisions);
+            cardSurface2.Init(subdivisions);
 
             cardSurface1.SetRect(rect);
             cardSurface2.SetRect(backRect);

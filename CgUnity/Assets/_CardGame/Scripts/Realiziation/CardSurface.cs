@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace CardGame
 {
+    [RequireComponent(typeof(MeshFilter))]
+    [RequireComponent(typeof(MeshRenderer))]
     public class CardSurface : MonoBehaviour
     {
         private GameObject card;
@@ -17,15 +19,14 @@ namespace CardGame
             this.rect = rect;
         }
 
-        public void Init(int subdivisions, Material material)
+        public void Init(int subdivisions)
         {
             this.subdivisions = subdivisions;
             card = gameObject;
 
-            mesh = card.AddComponent<MeshFilter>().sharedMesh = new Mesh();
+            mesh = card.GetComponent<MeshFilter>().sharedMesh = new Mesh();
 
-            MeshRenderer render = card.AddComponent<MeshRenderer>();
-            render.sharedMaterial = material;
+            MeshRenderer render = card.GetComponent<MeshRenderer>();
             render.receiveShadows = false;
             render.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             render.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
