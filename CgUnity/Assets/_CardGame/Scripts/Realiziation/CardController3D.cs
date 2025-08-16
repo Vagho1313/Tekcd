@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace CardGame
@@ -20,24 +21,26 @@ namespace CardGame
         private float timer;
         private float openTime;
         private CardOpenMode cardOpenMode;
-        private AnimationCurve moveCurve;
-        private AnimationCurve rotateCurve;
-        private AnimationCurve deformCurve;
+        private Func<float, float> moveFunc;
+        private Func<float, float> rotateFunc;
+        private Func<float, float> deformFunc;
 
-        public override void Setup(Rect rect, Rect backRect,
-            AnimationCurve moveCurve, AnimationCurve rotateCurve, AnimationCurve deformCurve)
+        public override void Setup(Rect rect,
+            Func<float, float> moveFunc, Func<float, float> rotateFunc, Func<float, float> deformFunc)
         {
+            cardOpenMode = CardOpenMode.Non;
+
             cardSurface2.transform.rotation = Quaternion.Euler(carPivot.eulerAngles.x, carPivot.eulerAngles.y, carPivot.eulerAngles.z + 180f);
 
             cardSurface1.Init(subdivisions);
             cardSurface2.Init(subdivisions);
 
             cardSurface1.SetRect(rect);
-            cardSurface2.SetRect(backRect);
+            cardSurface2.SetRect(new Rect(0f, 0f, 1f, 1f));
 
-            this.moveCurve = moveCurve;
-            this.rotateCurve = rotateCurve;
-            this.deformCurve = deformCurve;
+            this.moveFunc = moveFunc;
+            this.rotateFunc = rotateFunc;
+            this.deformFunc = deformFunc;
 
             cardSurface1.DeformCard(0f);
             cardSurface2.DeformCard(0f);
@@ -47,6 +50,7 @@ namespace CardGame
 
         public override void Open(float time)
         {
+            Debug.Log("Open " + cardOpenMode);
             if (cardOpenMode != CardOpenMode.Non)
             {
                 return;
@@ -59,6 +63,7 @@ namespace CardGame
 
         public override void Close(float time)
         {
+            Debug.Log("Close " + cardOpenMode);
             if (cardOpenMode != CardOpenMode.Non)
             {
                 return;
@@ -89,10 +94,10 @@ namespace CardGame
             if (timer < openTime)
             {
                 float t01 = timer / openTime;
-                float deformValue = maxDeform * deformCurve.Evaluate(open ? t01 : 1f - t01);
+                float deformValue = maxDeform * deformFunc(open ? t01 : 1f - t01);
 
-                carPivot.localPosition = new Vector3(0f, moveCurve.Evaluate(t01), 0f);
-                carPivot.localEulerAngles = new Vector3(180f * rotateCurve.Evaluate(open ? t01 : 1f - t01), 0f, 0f);
+                carPivot.localPosition = new Vector3(0f, moveFunc(t01), 0f);
+                carPivot.localEulerAngles = new Vector3(180f * rotateFunc(open ? t01 : 1f - t01), 0f, 0f);
 
                 cardSurface1.DeformCard(deformValue);
                 cardSurface2.DeformCard(-deformValue);

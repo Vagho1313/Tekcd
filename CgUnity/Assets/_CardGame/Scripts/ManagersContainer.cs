@@ -4,6 +4,8 @@ namespace CardGame
     {
         public ControllersContainer Controllers { get; private set; }
 
+        public CardGameConfig GameConfig { get; private set; }
+
         public GamePlayManager GamePlayManager { get; private set; }
 
         public GameUIController GameUIController { get; private set; }
@@ -14,9 +16,10 @@ namespace CardGame
 
         public GameDataManager GameDataManager { get; private set; }
 
-        public ManagersContainer(ControllersContainer controllers)
+        public ManagersContainer(ControllersContainer controllers, CardGameConfig cardGameConfig)
         {
             Controllers = controllers;
+            GameConfig = cardGameConfig;
         }
 
         public ManagersContainer Setup(GamePlayManager gamePlayManager)

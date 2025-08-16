@@ -124,3 +124,82 @@ MonoBehaviour:
     width: 1
     height: 1
   openCloseTime: 1.5
+  maxLevels: 10
+  tableDatas:
+  - name: Level_0 2x2
+    size: {x: 2, y: 2}
+    columns:
+    - lines: 0101
+    - lines: 0101
+  - name: Level_1 3x2
+    size: {x: 3, y: 2}
+    columns:
+    - lines: 0101
+    - lines: 0101
+    - lines: 0101
+  - name: Level_2 4x3
+    size: {x: 4, y: 3}
+    columns:
+    - lines: 010101
+    - lines: 010101
+    - lines: 010101
+    - lines: 010101
+  - name: Level_3 4x3
+    size: {x: 4, y: 3}
+    columns:
+    - lines: 010101
+    - lines: 010101
+    - lines: 010101
+    - lines: 010101
+  - name: Level_4 4x4
+    size: {x: 4, y: 4}
+    columns:
+    - lines: 01010101
+    - lines: 01010101
+    - lines: 01010101
+    - lines: 01010101
+  - name: Level_5 5x4
+    size: {x: 5, y: 4}
+    columns:
+    - lines: 01010101
+    - lines: 01010101
+    - lines: 01000001
+    - lines: 01010101
+    - lines: 01010101
+  - name: Level_6 6x5
+    size: {x: 6, y: 5}
+    columns:
+    - lines: 0101010101
+    - lines: 0101010101
+    - lines: 0100000001
+    - lines: 0100000001
+    - lines: 0101010101
+    - lines: 0101010101
+  - name: Level_7 6x5
+    size: {x: 6, y: 5}
+    columns:
+    - lines: 0101010101
+    - lines: 0101010101
+    - lines: 0100000001
+    - lines: 0100000001
+    - lines: 0101010101
+    - lines: 0101010101
+  - name: Level_8 6x6
+    size: {x: 6, y: 6}
+    columns:
+    - lines: 010101010101
+    - lines: 010101010101
+    - lines: 010100000101
+    - lines: 010100000101
+    - lines: 010101010101
+    - lines: 010101010101
+  - name: Level_9 7x6
+    size: {x: 7, y: 6}
+    columns:
+    - lines: 010101010101
+    - lines: 010101010101
+    - lines: 010100000101
+    - lines: 010100000101
+    - lines: 010100000101
+    - lines: 010101010101
+    - lines: 010101010101

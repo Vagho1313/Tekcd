@@ -11,6 +11,7 @@ namespace MyUtilities
         {
             CreateAtlas(1024, 1024, "CardsAtlas", GetRandomColor);
             CreateAtlas(32, 32, "CardBack", GetColor);
+
             AssetDatabase.SaveAssets();
         }
 

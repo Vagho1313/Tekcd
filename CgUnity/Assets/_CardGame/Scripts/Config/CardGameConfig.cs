@@ -14,6 +14,9 @@ namespace CardGame
         [SerializeField] private Rect backRect;
         [SerializeField] private float openCloseTime = 1.5f;
 
+        [SerializeField] private int maxLevels = 10;
+        [SerializeField] private TableData[] tableDatas;
+             
 
         public Func<float, float> MoveFunc => (float value) => moveCurve.Evaluate(value);
         public Func<float, float> RotateFunc => (float value) => rotateCurve.Evaluate(value);
@@ -23,5 +26,88 @@ namespace CardGame
         public Rect BackRect => backRect;
 
         public float OpenCloseTime => openCloseTime;
+
+        public TableData GetTableData(LevelData levelData)
+        {
+            if (levelData.index < tableDatas.Length)
+            {
+                return tableDatas[levelData.index];
+            }
+            else
+            {
+                return CreateLevels(levelData.index);
+            }
+        }
+
+        [ContextMenu("CreateLevels")]
+        private void CreateLevels()
+        {
+            tableDatas = new TableData[maxLevels];
+
+            for (int i = 0; i < maxLevels; i++)
+            {
+                tableDatas[i] = CreateLevels(i);
+            }
+
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(this);
+            UnityEditor.AssetDatabase.SaveAssets();
+#endif
+        }
+
+        private TableData CreateLevels(int levelIndex)
+        {
+            int columnsCount = 2 + ((levelIndex + 1) / 2);
+            int linesCount = 2 + (levelIndex / 2);
+
+            if ((columnsCount * linesCount) % 2 != 0)
+            {
+                columnsCount++;
+            }
+
+            Vector2Int size = new Vector2Int(columnsCount, linesCount);
+
+            TableColumns[] columns = new TableColumns[columnsCount];
+
+            int count = 0;
+            for (int i = 0; i < columnsCount; i++)
+            {
+                columns[i] = new TableColumns { lines = new bool[linesCount] };
+
+                for (int j = 0; j < linesCount; j++)
+                {
+                    bool checkHasCell = CheckHasCell(i, j, columnsCount, linesCount);
+                    columns[i].lines[j] = checkHasCell;
+                    if(checkHasCell)
+                    {
+                        count++;
+                    }
+                }
+            }
+            Debug.Log("Clees count: " + count);
+            if(count % 2 != 0)
+            {
+                Debug.LogWarning("count % 2 != 0");
+            }
+
+            return new TableData
+            {
+                name = "Level_" + levelIndex + " " + columnsCount + "x" + linesCount,
+                size = size,
+                columns = columns
+            };
+        }
+
+        private bool CheckHasCell(int i, int j, int columns, int lines)
+        {
+            if (columns * lines <= 4 * 4)
+            {
+                return true;
+            }
+
+            int vCount = ((lines / 2) + 1) / 2;
+
+            return i < 2 || i > columns - 1 - 2 || j < vCount || j > lines - 1 - vCount;
+        }
     }
 }

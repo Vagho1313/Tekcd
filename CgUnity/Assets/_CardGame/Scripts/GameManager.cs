@@ -11,6 +11,8 @@ namespace CardGame
         [Space(10), Header("Controllers")]
         [SerializeField] private ControllersContainer controllersContainer;
         [SerializeField] private GameUIController gameUIController;
+        [Space(10), Header("Config")]
+        [SerializeField] private CardGameConfig cardGameConfig;
 
         private ManagersContainer mContainer;
 
@@ -18,12 +20,22 @@ namespace CardGame
         {
             localDataBaseContainer.Setup();
 
-            mContainer = new ManagersContainer(controllersContainer).
+            mContainer = new ManagersContainer(controllersContainer, cardGameConfig).
             Setup(new GamePlayManager()).
             Setup(gameUIController).
             Setup(new LevelController()).
             Setup(new CardsController()).
             Setup(new GameDataManager());
+        }
+
+        private void Start()
+        {
+            mContainer.GamePlayManager.Start();
+        }
+
+        private void Update()
+        {
+            mContainer.CardsController.Update();
         }
     }
 }
