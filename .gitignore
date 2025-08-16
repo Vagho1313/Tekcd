@@ -97,3 +97,13 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+CgUnity/Library
+CgUnity/Temp
+CgUnity/UserSettings
+.DS_Store
+EditorSettings.asset
+VersionControlSettings.asset
+boot.config
+ClusterInputManager.asset
+MemorySettings.asset
+Settings.json
