@@ -18,13 +18,12 @@ namespace CardGame
         {
             localDataBaseContainer.Setup();
 
-            mContainer = new ManagersContainer(controllersContainer);
-
-            mContainer.Setup(new GamePlayManager());
-            mContainer.Setup(gameUIController);
-            mContainer.Setup(new LevelController());
-            mContainer.Setup(new CardsController());
-            mContainer.Setup(new GameDataManager());
+            mContainer = new ManagersContainer(controllersContainer).
+            Setup(new GamePlayManager()).
+            Setup(gameUIController).
+            Setup(new LevelController()).
+            Setup(new CardsController()).
+            Setup(new GameDataManager());
         }
     }
 }
