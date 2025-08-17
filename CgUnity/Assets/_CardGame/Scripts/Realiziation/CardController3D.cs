@@ -25,9 +25,11 @@ namespace CardGame
         private Func<float, float> rotateFunc;
         private Func<float, float> deformFunc;
 
-        public override void Setup(Rect rect,
+        public override void Setup(CardData cardData,
             Func<float, float> moveFunc, Func<float, float> rotateFunc, Func<float, float> deformFunc)
         {
+            base.Setup(cardData, moveFunc, rotateFunc, deformFunc);
+
             cardOpenMode = CardOpenMode.Non;
 
             cardSurface2.transform.rotation = Quaternion.Euler(carPivot.eulerAngles.x, carPivot.eulerAngles.y, carPivot.eulerAngles.z + 180f);
@@ -35,7 +37,7 @@ namespace CardGame
             cardSurface1.Init(subdivisions);
             cardSurface2.Init(subdivisions);
 
-            cardSurface1.SetRect(rect);
+            cardSurface1.SetRect(cardData.rect);
             cardSurface2.SetRect(new Rect(0f, 0f, 1f, 1f));
 
             this.moveFunc = moveFunc;
@@ -50,7 +52,6 @@ namespace CardGame
 
         public override void Open(float time)
         {
-            Debug.Log("Open " + cardOpenMode);
             if (cardOpenMode != CardOpenMode.Non)
             {
                 return;
@@ -63,7 +64,6 @@ namespace CardGame
 
         public override void Close(float time)
         {
-            Debug.Log("Close " + cardOpenMode);
             if (cardOpenMode != CardOpenMode.Non)
             {
                 return;

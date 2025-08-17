@@ -22,4 +22,11 @@ namespace CardGame
     {
         public bool[] lines;
     }
+
+    [Serializable]
+    public class CardData
+    {
+        public Vector2Int point;
+        public Rect rect;
+    }
 }

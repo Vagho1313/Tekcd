@@ -7,13 +7,12 @@ namespace CardGame
     {
         private List<BaseCardController> cards;
 
-
-        public void SetCards(List<BaseCardController> cards)
+        public void SetCards(List<BaseCardController> cards, List<CardData> cardData)
         {
             this.cards = cards;
-            foreach (var card in cards)
+            for (int i = 0; i < cards.Count && i < cardData.Count; i++)
             {
-                card.Setup(new Rect(0f, 0f, 1f / 32f, 1f / 32f),
+                cards[i].Setup(cardData[i],
                     Container.GameConfig.MoveFunc,
                     Container.GameConfig.RotateFunc,
                     Container.GameConfig.DeformFunc);

@@ -5,8 +5,15 @@ namespace CardGame
 {
     public abstract class BaseCardController : MonoBehaviour
     {
-        public abstract void Setup(Rect rect,
-            Func<float, float> moveFunc, Func<float, float> rotateFunc, Func<float, float> deformFunc);
+        [SerializeField] protected Vector2Int point;
+
+        public Vector2Int Point => point;
+
+        public virtual void Setup(CardData cardData,
+            Func<float, float> moveFunc, Func<float, float> rotateFunc, Func<float, float> deformFunc)
+        {
+            point = cardData.point;
+        }
 
         public abstract void Open(float time);
 

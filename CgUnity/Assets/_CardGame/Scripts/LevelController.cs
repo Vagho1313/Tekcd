@@ -8,7 +8,7 @@ namespace CardGame
     {
         public Action<LevelData> OnLevelPassed;
 
-        public void CreateLevel(LevelData levelData)
+        public List<BaseCardController> CreateLevel(LevelData levelData)
         {
             Vector2 tableSpaceSizeHalf = 0.5f * Container.Controllers.TableSpaceSize;
 
@@ -45,7 +45,7 @@ namespace CardGame
                 }
             }
 
-            Container.CardsController.SetCards(cards);
+            return cards;
         }
     }
 }

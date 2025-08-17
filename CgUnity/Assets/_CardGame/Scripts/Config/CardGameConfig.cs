@@ -10,8 +10,8 @@ namespace CardGame
         [SerializeField] private AnimationCurve moveCurve;
         [SerializeField] private AnimationCurve rotateCurve;
         [SerializeField] private AnimationCurve deformCurve;
-        [SerializeField] private Rect frontRect;
-        [SerializeField] private Rect backRect;
+        [SerializeField] private Texture2D cardsAtlas;
+        [SerializeField] private int iconSize = 32;
         [SerializeField] private float openCloseTime = 1.5f;
 
         [SerializeField] private int maxLevels = 10;
@@ -22,8 +22,7 @@ namespace CardGame
         public Func<float, float> RotateFunc => (float value) => rotateCurve.Evaluate(value);
         public Func<float, float> DeformFunc => (float value) => deformCurve.Evaluate(value);
 
-        public Rect FrontRect => frontRect;
-        public Rect BackRect => backRect;
+        public Vector2Int AtlasSize => new Vector2Int(cardsAtlas.width / iconSize, cardsAtlas.height / iconSize);
 
         public float OpenCloseTime => openCloseTime;
 
@@ -84,7 +83,7 @@ namespace CardGame
                     }
                 }
             }
-            Debug.Log("Clees count: " + count);
+            Debug.Log("Cells count: " + count);
             if(count % 2 != 0)
             {
                 Debug.LogWarning("count % 2 != 0");
