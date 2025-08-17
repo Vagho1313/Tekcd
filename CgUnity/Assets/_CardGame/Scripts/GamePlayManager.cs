@@ -14,8 +14,8 @@ namespace CardGame
 
             Container.GameDataManager.GetLevelData((LevelData levelData) =>
             {
-                List<BaseCardController> cards = Container.LevelController.CreateLevel(levelData);
-                Container.CardsController.SetCards(cards, GetCardData(cards.Count, Container.GameConfig.AtlasSize));
+                List<BaseCardController> cards = Container.LevelController.CreateLevel(levelData, out TableData tableData);
+                Container.CardsController.SetCards(tableData, cards, GetCardData(cards.Count, Container.GameConfig.AtlasSize));
             });
         }
 
@@ -76,6 +76,15 @@ namespace CardGame
             }
 
             return cardData;
+        }
+
+        public void Update()
+        {
+            if(Input.GetMouseButtonDown(0))
+            {
+                Vector2 pointOnTable = Container.Controllers.GetRayCastPoint();
+                Container.CardsController.CheckCard(pointOnTable);
+            }
         }
     }
 }

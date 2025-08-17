@@ -5,35 +5,43 @@ namespace CardGame
 {
     public class CardsController : BaseGameController
     {
-        private List<BaseCardController> cards;
+        private Dictionary<Vector2Int, BaseCardController> cardsDictionary;
+        private TableData tableData;
 
-        public void SetCards(List<BaseCardController> cards, List<CardData> cardData)
+        public void SetCards(TableData tableData, List<BaseCardController> cards, List<CardData> cardData)
         {
-            this.cards = cards;
+            cardsDictionary = new Dictionary<Vector2Int, BaseCardController>();
+
+            this.tableData = tableData;
+
             for (int i = 0; i < cards.Count && i < cardData.Count; i++)
             {
-                cards[i].Setup(cardData[i],
+                BaseCardController card = cards[i];
+                card.Setup(cardData[i],
                     Container.GameConfig.MoveFunc,
                     Container.GameConfig.RotateFunc,
                     Container.GameConfig.DeformFunc);
+
+                cardsDictionary.Add(ConvertToPoint(new Vector2(card.transform.position.x, card.transform.position.z)), card);
             }
         }
 
-        public void Update()
+        private Vector2Int ConvertToPoint(Vector2 position)
         {
-            if (Input.GetKeyDown(KeyCode.O))
+            Vector2 tableSize  = Container.Controllers.TableSpaceSize;
+            Vector2 anchor = Container.Controllers.TableAnchor;
+            Vector2 deltaVector = position - anchor;
+            Vector2 cellSize = new Vector2(tableSize.x / tableData.size.x, tableSize.y / tableData.size.y);
+
+            return new Vector2Int((int)(deltaVector.x / cellSize.x), (int)(deltaVector.y / cellSize.y));
+        }
+
+        public void CheckCard(Vector2 pointOnTable)
+        {
+            Vector2Int point = ConvertToPoint(pointOnTable);
+            if(cardsDictionary.TryGetValue(point, out BaseCardController card))
             {
-                foreach (var card in cards)
-                {
-                    card.Open(0.75f);
-                }
-            }
-            else if (Input.GetKeyDown(KeyCode.C))
-            {
-                foreach (var card in cards)
-                {
-                    card.Close(0.75f);
-                }
+                card.Open(Container.GameConfig.OpenCloseTime);
             }
         }
     }

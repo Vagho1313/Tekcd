@@ -299,6 +299,7 @@ MonoBehaviour:
   cardControllerPrefab: {fileID: 2202902474221199420, guid: 3cddc7584d6074e2d8a571efdb4faf11, type: 3}
   tableSpace: {fileID: 502885106}
   cardsContainer: {fileID: 1422618421}
+  mainCamera: {fileID: 784057700}
 --- !u!1 &784057698
 GameObject:
   m_ObjectHideFlags: 0

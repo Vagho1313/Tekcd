@@ -35,7 +35,7 @@ namespace CardGame
 
         private void Update()
         {
-            mContainer.CardsController.Update();
+            mContainer.GamePlayManager.Update();
         }
     }
 }
