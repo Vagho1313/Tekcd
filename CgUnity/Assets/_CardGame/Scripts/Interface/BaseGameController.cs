@@ -4,7 +4,7 @@ namespace CardGame
     {
         protected ManagersContainer Container { get; private set; }
 
-        public void Setup(ManagersContainer container)
+        public virtual void Setup(ManagersContainer container)
         {
             Container = container;
         }

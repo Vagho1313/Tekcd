@@ -11,6 +11,8 @@ namespace CardGame
 
         public event Action<BaseCardController> OnCardChoosed;
 
+        public int CardsCount => cardsDictionary.Count;
+
         public void SetCards(TableData tableData, List<BaseCardController> cards, List<CardData> cardData)
         {
             cardsDictionary = new Dictionary<Vector2Int, BaseCardController>();
@@ -61,6 +63,15 @@ namespace CardGame
         public void HideCard(BaseCardController card)
         {
             card.Hide();
+        }
+
+        public void RemoveCards()
+        {
+            foreach (var item in cardsDictionary)
+            {
+                UnityEngine.Object.Destroy(item.Value.gameObject);
+            }
+            cardsDictionary.Clear();
         }
     }
 }

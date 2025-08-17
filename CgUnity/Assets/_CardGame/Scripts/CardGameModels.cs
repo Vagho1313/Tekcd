@@ -7,6 +7,7 @@ namespace CardGame
     public class LevelData
     {
         public int index;
+        public GameResult result;
     }
 
     [Serializable]
@@ -28,5 +29,12 @@ namespace CardGame
     {
         public Vector2Int point;
         public Rect rect;
+    }
+
+    [Serializable]
+    public class GameResult
+    {
+        public int matches;
+        public int turnes;
     }
 }

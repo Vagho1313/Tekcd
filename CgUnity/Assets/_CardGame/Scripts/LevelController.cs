@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,11 +5,8 @@ namespace CardGame
 {
     public class LevelController : BaseGameController
     {
-        public Action<LevelData> OnLevelPassed;
-
         public List<BaseCardController> CreateLevel(LevelData levelData, out TableData tableData)
         {
-            levelData.index = 3;
             Vector2 tableSpaceSizeHalf = 0.5f * Container.Controllers.TableSpaceSize;
 
             tableData = Container.GameConfig.GetTableData(levelData);

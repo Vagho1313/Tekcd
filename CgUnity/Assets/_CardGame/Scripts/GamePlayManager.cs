@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,41 +8,46 @@ namespace CardGame
     {
         List<BaseCardController> cardsList;
 
-        private int matches;
+        private GameResult result;
+        private LevelData levelData;
 
-        private int turns;
+        public bool Started { get; private set; }
 
-        public void Start()
+        public event Action<GameResult> OnGameEnded;
+
+        public override void Setup(ManagersContainer container)
         {
-            cardsList = new();
+            base.Setup(container);
+            Started = false;
+        }
 
-            Container.LevelController.OnLevelPassed += (LevelData levelData) =>
-            {
-                Container.GameDataManager.SaveLevel(levelData);
-            };
+        public void StartGame()
+        {
+            Started = true;
+
+            cardsList = new();
 
             Container.GameDataManager.GetLevelData((LevelData levelData) =>
             {
+                this.levelData = levelData;
                 List<BaseCardController> cards = Container.LevelController.CreateLevel(levelData, out TableData tableData);
                 Container.CardsController.SetCards(tableData, cards, GetCardData(cards.Count, Container.GameConfig.AtlasSize));
             });
 
             Container.CardsController.OnCardChoosed += OnCardChoosed;
-        }
 
-        public void StartGame()
-        {
-            matches = 0;
-            turns = 0;
+            result = new GameResult();
+            Container.GameUIController.SetResult(result);
         }
 
         private void OnCardChoosed(BaseCardController card)
         {
+            Debug.Log(cardsList.Count % 2);
+            Debug.Log(card.Point + " IsHidden " + card.IsHidden + " InProgress " + card.InProgress + " IsOpened " + card.IsOpened + " Contains " + cardsList.Contains(card));
             if (card.IsHidden || card.InProgress || card.IsOpened || cardsList.Contains(card))
             {
                 return;
             }
-
             if (cardsList.Count % 2 == 0)
             {
                 cardsList.Add(card);
@@ -52,8 +58,10 @@ namespace CardGame
                 BaseCardController lastCard = cardsList[^1];
                 cardsList.Add(card);
 
-                matches += lastCard.Point == card.Point ? 1 : 0;
-                turns++;
+                result.matches += lastCard.Point == card.Point ? 1 : 0;
+                result.turnes++;
+
+                Container.GameUIController.SetResult(result);
 
                 Container.CardsController.OpenCard(card, ()=>
                 {
@@ -70,8 +78,22 @@ namespace CardGame
 
                     cardsList.Remove(lastCard);
                     cardsList.Remove(card);
+                    if(result.matches == Container.CardsController.CardsCount / 2)
+                    {
+                        levelData.index++;
+                        levelData.result = result;
+                        Container.GameDataManager.SaveLevel(levelData);
+                        OnGameEnded?.Invoke(result);
+                    }
                 });
             }
+        }
+
+        public void EndGame()
+        {
+            Container.CardsController.OnCardChoosed -= OnCardChoosed;
+            Container.CardsController.RemoveCards();
+            Started = false;
         }
 
         private List<CardData> GetCardData(int cardsCount, Vector2Int atlasSize)
@@ -89,7 +111,7 @@ namespace CardGame
 
             for (int i = 0; i < cardsCount / 2; i++)
             {
-                int index = Random.Range(0, indexes.Count);
+                int index = UnityEngine.Random.Range(0, indexes.Count);
                 randomIndexes.Add(indexes[index]);
                 indexes.RemoveAt(index);
             }
@@ -102,7 +124,7 @@ namespace CardGame
 
             for (int i = 0; i < randomIndexesCount; i++)
             {
-                int value = randomIndexes[Random.Range(0, randomIndexes.Count)];
+                int value = randomIndexes[UnityEngine.Random.Range(0, randomIndexes.Count)];
                 randomIndexes2x.Add(value);
 
                 if (index2xCheck.Contains(value))

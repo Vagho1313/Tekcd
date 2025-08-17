@@ -30,14 +30,38 @@ namespace CardGame
 
         private void Start()
         {
-            mContainer.GamePlayManager.Start();
+            mContainer.GamePlayManager.OnGameEnded += (GameResult result) =>
+            {
+                mContainer.GamePlayManager.EndGame();
+                mContainer.GameUIController.HomeMode();
+            };
 
-            mContainer.GamePlayManager.StartGame();
+            mContainer.GameUIController.HomeMode();
+
+            mContainer.GameUIController.OnStartButton += () =>
+            {
+                mContainer.GameUIController.GameMode();
+                mContainer.GamePlayManager.StartGame();
+            };
+
+            mContainer.GameUIController.OnEndButton += () =>
+            {
+                mContainer.GamePlayManager.EndGame();
+                mContainer.GameUIController.HomeMode();
+            };
+
+            mContainer.GameUIController.OnClearButton += () =>
+            {
+                mContainer.GameDataManager.ClearAll();
+            };
         }
 
         private void Update()
         {
-            mContainer.GamePlayManager.Update();
+            if (mContainer.GamePlayManager.Started)
+            {
+                mContainer.GamePlayManager.Update();
+            }
         }
     }
 }

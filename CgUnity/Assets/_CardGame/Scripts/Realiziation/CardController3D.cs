@@ -61,7 +61,7 @@ namespace CardGame
 
         public override void Open(float time, Action complited)
         {
-            if (cardOpenMode != CardOpenMode.Non)
+            if (cardOpenMode != CardOpenMode.Non || inProgress || isOpened || enabled)
             {
                 return;
             }
@@ -76,7 +76,7 @@ namespace CardGame
 
         public override void Close(float time, Action complited)
         {
-            if (cardOpenMode != CardOpenMode.Non)
+            if (cardOpenMode != CardOpenMode.Non || inProgress || !isOpened || enabled)
             {
                 return;
             }
@@ -131,8 +131,8 @@ namespace CardGame
             {
                 cardOpenMode = CardOpenMode.Non;
                 enabled = false;
-                complited?.Invoke();
                 inProgress = false;
+                complited?.Invoke();
             }
         }
     }

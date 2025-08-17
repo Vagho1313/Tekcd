@@ -31,7 +31,7 @@ namespace CardGame
 
         public ManagersContainer Setup(GameUIController gameUIController)
         {
-            gameUIController.Setup(this);
+            gameUIController.Setup();
             GameUIController = gameUIController;
             return this;
         }
