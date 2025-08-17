@@ -114,6 +114,23 @@ MonoBehaviour:
   cardsAtlas: {fileID: 2800000, guid: 31aeb912c57d14a108dc80fd223fd54c, type: 2}
   iconSize: 32
   openCloseTime: 0.75
+  audioData:
+  - audioType: 0
+    frequency: 1000
+    duration: 0.2
+    sampleRate: 44100
+  - audioType: 1
+    frequency: 60
+    duration: 2
+    sampleRate: 48000
+  - audioType: 2
+    frequency: 261.63
+    duration: 1
+    sampleRate: 44100
+  - audioType: 3
+    frequency: 523.25
+    duration: 2
+    sampleRate: 22050
   maxLevels: 10
   tableDatas:
   - name: Level_0 2x2

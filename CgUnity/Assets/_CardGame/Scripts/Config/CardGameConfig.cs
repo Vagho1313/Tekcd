@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using MyUtilities;
 using UnityEngine;
 
 namespace CardGame
@@ -13,10 +15,15 @@ namespace CardGame
         [SerializeField] private Texture2D cardsAtlas;
         [SerializeField] private int iconSize = 32;
         [SerializeField] private float openCloseTime = 1.5f;
-
+        [Space(10), Header("Audio")]
+        [SerializeField] private AudioData[] audioData;
+        [Space(10), Header("Level")]
         [SerializeField] private int maxLevels = 10;
         [SerializeField] private TableData[] tableDatas;
-             
+
+        private Dictionary<AudioType, AudioSource> audioDictionary;
+        private GameObject audioContainer;
+        private ToneGenerator toneGenerator;
 
         public Func<float, float> MoveFunc => (float value) => moveCurve.Evaluate(value);
         public Func<float, float> RotateFunc => (float value) => rotateCurve.Evaluate(value);
@@ -25,6 +32,25 @@ namespace CardGame
         public Vector2Int AtlasSize => new Vector2Int(cardsAtlas.width / iconSize, cardsAtlas.height / iconSize);
 
         public float OpenCloseTime => openCloseTime;
+
+        public void Init()
+        {
+            toneGenerator = new ToneGenerator();
+            audioDictionary = new Dictionary<AudioType, AudioSource>();
+            audioContainer = new GameObject("AudioContainer");
+            foreach (var audio in audioData)
+            {
+                AudioSource audioSource = audioContainer.AddComponent<AudioSource>();
+                audioSource.playOnAwake = false;
+                audioSource.clip = toneGenerator.Create(audio.frequency, audio.duration, audio.sampleRate);
+                audioDictionary.Add(audio.audioType, audioSource);
+            }
+        }
+
+        public bool GetAudio(AudioType audioType, out AudioSource audioSource)
+        {
+            return audioDictionary.TryGetValue(audioType, out audioSource);
+        }
 
         public TableData GetTableData(LevelData levelData)
         {

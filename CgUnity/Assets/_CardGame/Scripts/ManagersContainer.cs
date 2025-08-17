@@ -16,6 +16,8 @@ namespace CardGame
 
         public GameDataManager GameDataManager { get; private set; }
 
+        public AudioContainer AudioContainer { get; private set; }
+
         public ManagersContainer(ControllersContainer controllers, CardGameConfig cardGameConfig)
         {
             Controllers = controllers;
@@ -54,6 +56,13 @@ namespace CardGame
         {
             gameDataManager.Setup(this);
             GameDataManager = gameDataManager;
+            return this;
+        }
+
+        public ManagersContainer Setup(AudioContainer audioContainer)
+        {
+            audioContainer.Setup(this);
+            AudioContainer = audioContainer;
             return this;
         }
     }

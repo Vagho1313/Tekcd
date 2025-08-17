@@ -52,11 +52,13 @@ namespace CardGame
 
         public void OpenCard(BaseCardController card, Action complited = null)
         {
+            Container.AudioContainer.PlayCardFlipping();
             card.Open(Container.GameConfig.OpenCloseTime, complited);
         }
 
         public void CloseCard(BaseCardController card, Action complited = null)
         {
+            Container.AudioContainer.PlayCardFlipping();
             card.Close(Container.GameConfig.OpenCloseTime, complited);
         }
 

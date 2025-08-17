@@ -25,11 +25,14 @@ namespace CardGame
             Setup(gameUIController).
             Setup(new LevelController()).
             Setup(new CardsController()).
-            Setup(new GameDataManager());
+            Setup(new GameDataManager()).
+            Setup(new AudioContainer());
         }
 
         private void Start()
         {
+            mContainer.GameConfig.Init();
+
             mContainer.GamePlayManager.OnGameEnded += (GameResult result) =>
             {
                 mContainer.GamePlayManager.EndGame();

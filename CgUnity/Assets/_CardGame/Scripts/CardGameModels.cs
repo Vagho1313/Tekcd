@@ -37,4 +37,21 @@ namespace CardGame
         public int matches;
         public int turnes;
     }
+
+    [Serializable]
+    public class AudioData
+    {
+        public AudioType audioType;
+        public float frequency = 440f;
+        public float duration = 1.0f;
+        public int sampleRate = 44100;
+    }
+
+    public enum AudioType
+    {
+        CardFlipping,
+        Matching,
+        Mismatching,
+        Win
+    }
 }

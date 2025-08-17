@@ -42,8 +42,6 @@ namespace CardGame
 
         private void OnCardChoosed(BaseCardController card)
         {
-            Debug.Log(cardsList.Count % 2);
-            Debug.Log(card.Point + " IsHidden " + card.IsHidden + " InProgress " + card.InProgress + " IsOpened " + card.IsOpened + " Contains " + cardsList.Contains(card));
             if (card.IsHidden || card.InProgress || card.IsOpened || cardsList.Contains(card))
             {
                 return;
@@ -69,11 +67,13 @@ namespace CardGame
                     {
                         Container.CardsController.HideCard(lastCard);
                         Container.CardsController.HideCard(card);
+                        Container.AudioContainer.PlayMatching();
                     }
                     else
                     {
                         Container.CardsController.CloseCard(lastCard);
                         Container.CardsController.CloseCard(card);
+                        Container.AudioContainer.PlayMismatching();
                     }
 
                     cardsList.Remove(lastCard);
@@ -83,6 +83,7 @@ namespace CardGame
                         levelData.index++;
                         levelData.result = result;
                         Container.GameDataManager.SaveLevel(levelData);
+                        Container.AudioContainer.PlayGameWin();
                         OnGameEnded?.Invoke(result);
                     }
                 });
