@@ -120,8 +120,8 @@ MonoBehaviour:
     duration: 0.2
     sampleRate: 44100
   - audioType: 1
-    frequency: 60
-    duration: 2
+    frequency: 220
+    duration: 1
     sampleRate: 48000
   - audioType: 2
     frequency: 261.63
