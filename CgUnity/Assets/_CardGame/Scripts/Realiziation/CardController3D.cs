@@ -25,6 +25,15 @@ namespace CardGame
         private Func<float, float> rotateFunc;
         private Func<float, float> deformFunc;
 
+        private Action complited;
+        private bool inProgress;
+        private bool isHidden;
+        private bool isOpened;
+
+        public override bool InProgress => inProgress;
+        public override bool IsHidden => isHidden;
+        public override bool IsOpened => isOpened;
+
         public override void Setup(CardData cardData,
             Func<float, float> moveFunc, Func<float, float> rotateFunc, Func<float, float> deformFunc)
         {
@@ -50,28 +59,40 @@ namespace CardGame
             enabled = false;
         }
 
-        public override void Open(float time)
+        public override void Open(float time, Action complited)
         {
             if (cardOpenMode != CardOpenMode.Non)
             {
                 return;
             }
+            isOpened = true;
+            inProgress = true;
+            this.complited = complited;
             timer = 0f;
             openTime = time;
             cardOpenMode = CardOpenMode.Open;
             enabled = true;
         }
 
-        public override void Close(float time)
+        public override void Close(float time, Action complited)
         {
             if (cardOpenMode != CardOpenMode.Non)
             {
                 return;
             }
+            isOpened = false;
+            inProgress = true;
+            this.complited = complited;
             timer = 0f;
             openTime = time;
             cardOpenMode = CardOpenMode.Close;
             enabled = true;
+        }
+
+        public override void Hide()
+        {
+            gameObject.SetActive(false);
+            isHidden = true;
         }
 
         private void Update()
@@ -91,23 +112,27 @@ namespace CardGame
 
         private void AnimateInOpenCloseMode(bool open, float deltaTime)
         {
-            if (timer < openTime)
+            if (timer < openTime + 0.5f)
             {
                 float t01 = timer / openTime;
-                float deformValue = maxDeform * deformFunc(open ? t01 : 1f - t01);
+                if (t01 <= 1f)
+                {
+                    float deformValue = maxDeform * deformFunc(open ? t01 : 1f - t01);
 
-                carPivot.localPosition = new Vector3(0f, moveFunc(t01), 0f);
-                carPivot.localEulerAngles = new Vector3(180f * rotateFunc(open ? t01 : 1f - t01), 0f, 0f);
+                    carPivot.localPosition = new Vector3(0f, moveFunc(t01), 0f);
+                    carPivot.localEulerAngles = new Vector3(180f * rotateFunc(open ? t01 : 1f - t01), 0f, 0f);
 
-                cardSurface1.DeformCard(deformValue);
-                cardSurface2.DeformCard(-deformValue);
-
+                    cardSurface1.DeformCard(deformValue);
+                    cardSurface2.DeformCard(-deformValue);
+                }
                 timer += deltaTime;
             }
             else
             {
                 cardOpenMode = CardOpenMode.Non;
                 enabled = false;
+                complited?.Invoke();
+                inProgress = false;
             }
         }
     }

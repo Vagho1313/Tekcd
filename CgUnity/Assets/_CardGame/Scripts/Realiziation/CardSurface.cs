@@ -27,12 +27,6 @@ namespace CardGame
             mesh = card.GetComponent<MeshFilter>().sharedMesh = new Mesh();
 
             MeshRenderer render = card.GetComponent<MeshRenderer>();
-            render.receiveShadows = false;
-            render.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-            render.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
-            render.reflectionProbeUsage = UnityEngine.Rendering.ReflectionProbeUsage.Off;
-            render.motionVectorGenerationMode = MotionVectorGenerationMode.ForceNoMotion;
-            render.allowOcclusionWhenDynamic = false;
 
             subdivisions = Mathf.Clamp(subdivisions, 2, subdivisions);
             nodes = new Vector3[subdivisions + 1][];

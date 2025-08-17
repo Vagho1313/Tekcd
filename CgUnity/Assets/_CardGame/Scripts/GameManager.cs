@@ -31,6 +31,8 @@ namespace CardGame
         private void Start()
         {
             mContainer.GamePlayManager.Start();
+
+            mContainer.GamePlayManager.StartGame();
         }
 
         private void Update()

@@ -5,8 +5,16 @@ namespace CardGame
 {
     public class GamePlayManager : BaseGameController
     {
+        List<BaseCardController> cardsList;
+
+        private int matches;
+
+        private int turns;
+
         public void Start()
         {
+            cardsList = new();
+
             Container.LevelController.OnLevelPassed += (LevelData levelData) =>
             {
                 Container.GameDataManager.SaveLevel(levelData);
@@ -17,6 +25,53 @@ namespace CardGame
                 List<BaseCardController> cards = Container.LevelController.CreateLevel(levelData, out TableData tableData);
                 Container.CardsController.SetCards(tableData, cards, GetCardData(cards.Count, Container.GameConfig.AtlasSize));
             });
+
+            Container.CardsController.OnCardChoosed += OnCardChoosed;
+        }
+
+        public void StartGame()
+        {
+            matches = 0;
+            turns = 0;
+        }
+
+        private void OnCardChoosed(BaseCardController card)
+        {
+            if (card.IsHidden || card.InProgress || card.IsOpened || cardsList.Contains(card))
+            {
+                return;
+            }
+
+            if (cardsList.Count % 2 == 0)
+            {
+                cardsList.Add(card);
+                Container.CardsController.OpenCard(card);
+            }
+            else
+            {
+                BaseCardController lastCard = cardsList[^1];
+                cardsList.Add(card);
+
+                matches += lastCard.Point == card.Point ? 1 : 0;
+                turns++;
+
+                Container.CardsController.OpenCard(card, ()=>
+                {
+                    if(lastCard.Point == card.Point)
+                    {
+                        Container.CardsController.HideCard(lastCard);
+                        Container.CardsController.HideCard(card);
+                    }
+                    else
+                    {
+                        Container.CardsController.CloseCard(lastCard);
+                        Container.CardsController.CloseCard(card);
+                    }
+
+                    cardsList.Remove(lastCard);
+                    cardsList.Remove(card);
+                });
+            }
         }
 
         private List<CardData> GetCardData(int cardsCount, Vector2Int atlasSize)

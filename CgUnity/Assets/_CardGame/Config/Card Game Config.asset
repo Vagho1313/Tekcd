@@ -112,7 +112,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   cardsAtlas: {fileID: 2800000, guid: 31aeb912c57d14a108dc80fd223fd54c, type: 2}
-  openCloseTime: 1.5
+  iconSize: 32
+  openCloseTime: 0.75
   maxLevels: 10
   tableDatas:
   - name: Level_0 2x2

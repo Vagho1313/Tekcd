@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ namespace CardGame
     {
         private Dictionary<Vector2Int, BaseCardController> cardsDictionary;
         private TableData tableData;
+
+        public event Action<BaseCardController> OnCardChoosed;
 
         public void SetCards(TableData tableData, List<BaseCardController> cards, List<CardData> cardData)
         {
@@ -41,8 +44,23 @@ namespace CardGame
             Vector2Int point = ConvertToPoint(pointOnTable);
             if(cardsDictionary.TryGetValue(point, out BaseCardController card))
             {
-                card.Open(Container.GameConfig.OpenCloseTime);
+                OnCardChoosed?.Invoke(card);
             }
+        }
+
+        public void OpenCard(BaseCardController card, Action complited = null)
+        {
+            card.Open(Container.GameConfig.OpenCloseTime, complited);
+        }
+
+        public void CloseCard(BaseCardController card, Action complited = null)
+        {
+            card.Close(Container.GameConfig.OpenCloseTime, complited);
+        }
+
+        public void HideCard(BaseCardController card)
+        {
+            card.Hide();
         }
     }
 }
